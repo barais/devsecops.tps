@@ -99,6 +99,10 @@ function mermaidIntegration() {
 }
 
 export default defineConfig({
+
+  site: 'https://olivier.barais.fr', // URL finale déployée (sitemaps, URL canoniques)
+  base: '/devsecops.tps',  // Chemin de base (ex. pour GitHub Pages)
+
   markdown: {
     remarkPlugins: [remarkMermaid],
   },
