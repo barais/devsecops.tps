@@ -1,0 +1,83 @@
+---
+// Composant Mermaid — bundlé par Vite (import local, pas de CDN)
+// Gère les deux cas possibles :
+//   1. remarkMermaid a converti le bloc en <pre class="mermaid">
+//   2. Expressive Code a rendu le bloc (sélecteur data-language ou figure)
+---
+<script>
+  import mermaid from 'mermaid';
+
+  mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+
+  async function renderMermaid() {
+    // ── Cas 1 : plugin remarkMermaid → <pre class="mermaid"> ─────────────────
+    const simplePres = [...document.querySelectorAll('pre.mermaid:not([data-processed])')];
+    if (simplePres.length > 0) {
+      console.log('[mermaid] cas 1 : trouvé', simplePres.length, 'élément(s) pre.mermaid');
+      await mermaid.run({ nodes: simplePres });
+      return;
+    }
+
+    // ── Cas 2 : Expressive Code → <pre data-language="mermaid"> ─────────────
+    const ecPres = [...document.querySelectorAll('pre[data-language="mermaid"]')];
+    if (ecPres.length > 0) {
+      console.log('[mermaid] cas 2 : trouvé', ecPres.length, 'élément(s) EC pre[data-language]');
+      for (const pre of ecPres) {
+        const source = (pre.querySelector('code') ?? pre).textContent?.trim() ?? '';
+        if (!source) continue;
+        const id = 'mermaid-' + Math.random().toString(36).slice(2, 9);
+        try {
+          const { svg } = await mermaid.render(id, source);
+          const div = document.createElement('div');
+          div.innerHTML = svg;
+          div.style.cssText = 'overflow-x:auto;padding:1rem 0';
+          (pre.closest('.expressive-code, figure') ?? pre).replaceWith(div);
+        } catch (err) {
+          console.error('[mermaid] erreur rendu cas 2 :', err, '\nSource :', source.slice(0, 80));
+        }
+      }
+      return;
+    }
+
+    // ── Cas 3 : figure avec data-language (autre variante EC) ────────────────
+    const ecFigs = [...document.querySelectorAll('figure[data-language="mermaid"]')];
+    if (ecFigs.length > 0) {
+      console.log('[mermaid] cas 3 : trouvé', ecFigs.length, 'figure[data-language]');
+      for (const fig of ecFigs) {
+        const pre = fig.querySelector('pre, code');
+        const source = pre?.textContent?.trim() ?? '';
+        if (!source) continue;
+        const id = 'mermaid-' + Math.random().toString(36).slice(2, 9);
+        try {
+          const { svg } = await mermaid.render(id, source);
+          const div = document.createElement('div');
+          div.innerHTML = svg;
+          div.style.cssText = 'overflow-x:auto;padding:1rem 0';
+          fig.replaceWith(div);
+        } catch (err) {
+          console.error('[mermaid] erreur rendu cas 3 :', err);
+        }
+      }
+      return;
+    }
+
+    // ── Diagnostic : aucun élément trouvé ────────────────────────────────────
+    const allPres = [...document.querySelectorAll('pre')];
+    if (allPres.length === 0) {
+      console.log('[mermaid] aucun <pre> sur cette page');
+      return;
+    }
+    console.log('[mermaid] aucun bloc mermaid trouvé. <pre> présents :');
+    allPres.forEach((p, i) => {
+      const attrs = [...p.attributes].map(a => `${a.name}="${a.value}"`).join(' ');
+      const text = p.textContent?.slice(0, 40).replace(/\n/g, '↵') ?? '';
+      console.log(`  pre[${i}] ${attrs} → "${text}"`);
+    });
+  }
+
+  // Fonctionne à chaque navigation SPA (Starlight View Transitions) ET au 1er chargement
+  document.addEventListener('astro:page-load', () => {
+    console.log('[mermaid] astro:page-load déclenché sur', location.pathname);
+    renderMermaid();
+  });
+</script>

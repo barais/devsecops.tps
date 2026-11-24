@@ -1,40 +1,121 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: DevSecOps — Travaux Pratiques
+description: TPs du cours DevSecOps à l'Université de Rennes — gestion de dépendances, sécurité de la supply chain, analyse de vulnérabilités, SBOM et reproductibilité des builds.
+template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Développez avec les meilleures pratiques de sécurité et d'automatisation
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Example Guide
-      link: /guides/example/
-      icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: Slides du cours
+      link: https://olivier.barais.fr/devsecops.module0
       icon: external
-      variant: minimal
+      variant: primary
+    - text: Commencer le TP 1
+      link: /tps/tp1-uv-git-ci/
+      icon: right-arrow
+      variant: secondary
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, Badge } from '@astrojs/starlight/components';
 
-## Next steps
+## Ce que vous allez apprendre
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
+  <Card title="📦 Gestion des dépendances" icon="puzzle">
+    Maîtriser `uv`, l'outil moderne de gestion de dépendances Python. Comprendre la différence entre `pyproject.toml` et `uv.lock`, et garantir la reproductibilité des builds.
+  </Card>
+  <Card title="🌿 Git & GitFlow" icon="git-branch">
+    Travailler en équipe avec Git : branches, merge requests, protection de `main`, code review. Adopter le GitFlow pour structurer le développement collaboratif.
+  </Card>
+  <Card title="🐳 Conteneurisation" icon="rocket">
+    Créer des images Docker reproductibles, orchestrer des services avec `docker-compose` et publier dans un registre GitLab intégré au pipeline CI/CD.
+  </Card>
+  <Card title="🔍 Analyse statique & secrets" icon="magnifier">
+    Détecter les vulnérabilités avec `bandit`, traquer les secrets exposés avec `gitleaks` et générer un **SBOM CycloneDX** pour cartographier toutes les dépendances.
+  </Card>
+  <Card title="🧊 Reproductibilité avec Guix" icon="approve-check-circle">
+    Dépasser les limites des virtualenvs et de Docker avec **Guix** : environnements déclaratifs, `time-machine` et builds bit-à-bit reproductibles.
+  </Card>
+  <Card title="🔒 Audit de supply chain OSS" icon="warning">
+    Endosser le rôle de consultant en sécurité : cartographier les risques, construire des scénarios d'attaque et proposer des contre-mesures chiffrées sur un projet open source réel.
+  </Card>
+</CardGrid>
+
+## Travaux pratiques
+
+<CardGrid>
+  <Card title="TP 1 — uv, Git & CI" icon="document">
+    <Badge text="Python" variant="tip" /> <Badge text="GitFlow" variant="note" /> <Badge text="CI/CD" variant="caution" />
+
+    Créez un projet Python avec `uv`, écrivez des tests avec `pytest`, travaillez en binôme via GitFlow et automatisez vérifications et déploiements avec GitLab CI/CD.
+
+    [→ Accéder au TP 1](/tps/tp1-uv-git-ci/)
+  </Card>
+  <Card title="TP 2 — Conteneurisation avec Docker" icon="document">
+    <Badge text="Docker" variant="tip" /> <Badge text="Compose" variant="note" /> <Badge text="Registre" variant="caution" />
+
+    Créez des images Docker reproductibles, orchestrez des services multi-conteneurs avec `docker-compose` et publiez vos images dans un registre GitLab.
+
+    [→ Accéder au TP 2](/tps/tp2-docker/)
+  </Card>
+  <Card title="TP 3 — Bandit, Gitleaks & SBOM" icon="document">
+    <Badge text="SAST" variant="tip" /> <Badge text="Secrets" variant="danger" /> <Badge text="CycloneDX" variant="note" />
+
+    Analysez votre code avec `bandit`, détectez les secrets exposés avec `gitleaks`, automatisez via `pre-commit` et générez un SBOM CycloneDX intégré à votre pipeline CI.
+
+    [→ Accéder au TP 3](/tps/tp3-bandit-gitleaks-sbom/)
+  </Card>
+  <Card title="TP 4 — Reproductibilité avec Guix" icon="document">
+    <Badge text="Guix" variant="tip" /> <Badge text="Nix-like" variant="note" /> <Badge text="Reproductible" variant="caution" />
+
+    Découvrez les limites des virtualenvs et de Docker, installez Guix, gérez des profils déclaratifs et utilisez `guix time-machine` pour des environnements 100% reproductibles.
+
+    [→ Accéder au TP 4](/tps/tp4-guix/)
+  </Card>
+</CardGrid>
+
+## Projet de fin de cours
+
+<Card title="Projet — Audit de sécurité d'un composant open source" icon="star">
+  <Badge text="Groupes de 2–4" variant="tip" /> <Badge text="Mi-mai" variant="caution" /> <Badge text="Soutenance 30 min" variant="note" />
+
+  Endossez le rôle d'un **consultant en sécurité** mandaté pour auditer la supply chain d'un projet open source. Analysez les pratiques de développement, construisez le graphe de dépendances, générez un SBOM, identifiez 3 scénarios d'attaque depuis le [Risk Explorer SAP](https://sap.github.io/risk-explorer-for-software-supply-chains/) et proposez des contre-mesures priorisées avec analyse coût/bénéfice.
+
+  [→ Accéder au sujet de projet](/tps/projet-audit-oss/)
+</Card>
+
+## Ressources
+
+<CardGrid>
+  <Card title="Slides du cours" icon="open-book">
+    Les transparents du cours sont disponibles en ligne. Revenez-y si vous avez besoin de contexte sur un concept abordé dans les TPs.
+
+    [→ Ouvrir les slides](https://olivier.barais.fr/devsecops.module0)
+  </Card>
+  <Card title="Risk Explorer (SAP)" icon="warning">
+    Catalogue des techniques d'attaque sur la supply chain logicielle et de leurs contre-mesures. Référence principale du projet.
+
+    [→ sap.github.io/risk-explorer](https://sap.github.io/risk-explorer-for-software-supply-chains/)
+  </Card>
+  <Card title="GitLab de l'ISTIC" icon="github">
+    Dépôts de TPs, pipelines CI/CD et merge requests. Connectez-vous avec vos identifiants universitaires.
+
+    [→ gitlab2.istic.univ-rennes1.fr](https://gitlab2.istic.univ-rennes1.fr/)
+  </Card>
+  <Card title="Documentation uv" icon="external">
+    La documentation officielle de `uv` couvre l'ensemble des commandes, options et cas d'usage avancés.
+
+    [→ docs.astral.sh/uv](https://docs.astral.sh/uv/)
+  </Card>
+  <Card title="OpenSSF Scorecard" icon="approve-check-circle">
+    Évaluez automatiquement les pratiques de sécurité d'un projet open source sur une dizaine de critères.
+
+    [→ securityscorecards.dev](https://securityscorecards.dev/)
+  </Card>
+  <Card title="Learn Git Branching" icon="puzzle">
+    Un tutoriel interactif et visuel pour comprendre Git en profondeur — branches, rebase, cherry-pick…
+
+    [→ learngitbranching.js.org](https://learngitbranching.js.org/?locale=fr_FR)
+  </Card>
 </CardGrid>

@@ -1,0 +1,8 @@
+---
+// Override du composant Head de Starlight.
+// On délègue tout au composant par défaut, puis on injecte notre renderer Mermaid.
+import Default from '@astrojs/starlight/components/Head.astro';
+import MermaidRenderer from '../components/MermaidRenderer.astro';
+---
+<Default {...Astro.props}><slot /></Default>
+<MermaidRenderer />
